@@ -1,0 +1,38 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+ext.testngVersion = '6.8'
+ext.seleniumVersion = '3.4.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+	maven { url "https://artifacts.alfresco.com/nexus/content/repositories/public" }
+	mavenCentral()
+    jcenter()
+}
+
+
+dependencies {
+    testCompile group: 'org.testng', name: 'testng', version: testngVersion
+	testCompile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version:seleniumVersion
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version:seleniumVersion
+	testCompile group: 'org.seleniumhq.selenium', name: 'selenium-api', version:seleniumVersion
+	testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version:seleniumVersion
+	testCompile group: 'com.relevantcodes', name: 'extentreports', version: '1.2'
+}
+
+test {
+	useTestNG()
+}
+
+task testQuoteSuite(type: Test, dependsOn: 'test') {
+   useTestNG()
+   includes = ['**/QuotingTestGroup*'] as Set   
+}
+
+task testJobSuite(type: Test, dependsOn: 'test') {
+   useTestNG()
+   includes = ['**/JobTestGroup*'] as Set   
+}
+
